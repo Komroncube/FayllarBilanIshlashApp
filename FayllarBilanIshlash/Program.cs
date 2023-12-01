@@ -1,3 +1,7 @@
+using FayllarBilanIshlash.Data;
+using FayllarBilanIshlash.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,15 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<ProductDbContext>(options=>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+
+builder.Services.AddTransient<IFileService, FileService>();
+builder.Services.AddTransient<IProductService, ProductService>();
 
 var app = builder.Build();
 
